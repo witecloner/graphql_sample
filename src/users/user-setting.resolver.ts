@@ -1,12 +1,14 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { UserSettingsMock } from 'src/__mocks__/user-setting.mock';
-import { UserSetting } from 'src/models/user-setting.model';
-import { CreateUserSettingsInput } from 'src/utils/create-user-settings-input';
+import { UserSetting } from '../models/user-setting.model';
+import { CreateUserSettingsInput } from '../utils/create-user-settings-input';
+import { UserSettingService } from './user-setting.service';
 
 @Resolver()
-export class UsersettingResolver {
+export class UserSettingResolver {
+  constructor(private userSettingService: UserSettingService) {}
+
   @Mutation(() => UserSetting)
-  createUserSettings(
+  async createUserSettings(
     @Args('createUserSettingsData')
     createUserSettingsData: CreateUserSettingsInput,
   ) {
@@ -16,9 +18,13 @@ export class UsersettingResolver {
     // UserSettingsMock.push(newUserSettings);
     // return newUserSettings;
 
-    console.log(createUserSettingsData);
-    UserSettingsMock.push(createUserSettingsData);
-    return createUserSettingsData;
+    // console.log(createUserSettingsData);
+    // UserSettingsMock.push(createUserSettingsData);
+    // return createUserSettingsData;
+    const userSetting = await this.userSettingService.createUserSettings(
+      createUserSettingsData,
+    );
+    return userSetting;
   }
   // # Write your query or mutation here for GrapQL Playground
   // mutation {

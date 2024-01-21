@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/models/user.model';
-import { CreateUserInput } from 'src/utils/create-user-input';
+import { User } from '../models/user.model';
+import { CreateUserInput } from '../utils/create-user-input';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -11,15 +11,19 @@ export class UserService {
   ) {}
 
   getUsers() {
-    return this.usersRepository.find();
+    return this.usersRepository.find({ relations: ['settings'] });
   }
 
   getUserById(id: number) {
-    return this.usersRepository.findOneBy({ id });
+    // return this.usersRepository.findOneBy({ id });
+    return this.usersRepository.findOne({
+      where: { id },
+      relations: ['settings'],
+    });
   }
 
   createUser(createUserData: CreateUserInput) {
-    const newUser = this.usersRepository.create(  createUserData);
+    const newUser = this.usersRepository.create(createUserData);
     return this.usersRepository.save(newUser);
   }
 }
