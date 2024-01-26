@@ -15,6 +15,54 @@ type User {
   settings: UserSetting
 }
 
+type NavBadges {
+  id: Int!
+  color: String!
+  value: String!
+}
+
+type NavItem {
+  name: String!
+  type: String!
+  state: String
+  icon: String
+  svgIcon: String
+  tooltip: String
+  disabled: Boolean
+  expanded: Boolean
+  items: [NavSubItem!]
+  badges: NavBadges
+}
+
+type NavSubItem {
+  name: String!
+  type: String
+  state: String
+  icon: String
+  svgIcon: String
+  expanded: Boolean
+  item: NavItem!
+}
+
+type Parent {
+  parentName: String!
+  Refered: String
+  Childs: [Child!]!
+}
+
+type ChildToChild {
+  id: Int!
+  childName: String!
+  child: Child!
+}
+
+type Child {
+  childName: String!
+  value: String!
+  parent: Parent!
+  childToChildest: ChildToChild!
+}
+
 type Query {
   getUserById(id: Int!): User
   getUsers: [User!]!
